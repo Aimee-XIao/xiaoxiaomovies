@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link href="https://cdn.bootcss.com/bootstrap/3.3.1/css/bootstrap.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        ul {
+            list-style: none;
+        }
+        #box {
+            width: 100%;
+        }
+        #box .header  {
+            width: 100%;
+            height: 250px;
+            background: linear-gradient(to top right, #CDDC39 0%, #8BC34A 25%, #FFEB3B 100%);
+        }
+        #box .header h1 {
+            width: 90%;
+            height: 100px;
+            line-height: 100px;
+            margin: 0 auto;
+            text-align: center;
+            font-size: 40px;
+            color: white;
+            font-family: 汉仪晓波折纸体简;
+        }
+        #box .header input {
+            width: 600px;
+            height: 40px;
+            display: block;
+            margin: 20px auto;
+            border-radius: 6px;
+            outline: none;
+            border: none;
+            text-indent: 10px;
+            font-size: 18px;
+            color: #515151;
+        }
+        #box .header input::placeholder {
+            font-size: 15px;
+            color: #7a7a7a;
+        }
+        #box .header .button {
+            width: 600px;
+            height: 40px;
+            display: block;
+            margin: 20px auto;
+        }
+        #box .header .button ul {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        #box .header .button li {
+            width: 100px;
+            height: 40px;
+            background-color: rgba(174, 208, 65, 0.8);
+            border-radius: 6px;
+            text-align: center;
+            line-height: 40px;
+            color:white;
+            cursor: pointer;
+        }
+        .section {
+            width: 90%;
+            margin: 10px auto;
+        }
+        .section h2 {
+            width: 100%;
+            height: 50px;
+            border-bottom:1px solid #ccc ;
+            padding: 5px;
+        }
+        .section ul {
+            width:84%;
+            display: flex;
+            justify-content: flex-start;
+            flex-wrap: wrap;
+            margin: 10px auto;
+        }
+        .section ul li {
+            width: 300px;
+            height: 300px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            margin-left: 26px;
+            margin-top: 10px;
+            transition: all 1s;
+            padding: 5px;
+        }
+        .section ul li:hover {
+            transform: translate(-10px,-10px);
+            box-shadow: 5px 5px 5px rgba(0,0,0,.3);
+        }
+        .section h3 {
+           margin: 5px 10px;
+
+        }
+        .section .rate {
+            margin: 10px 10px;
+        }
+        .section .rate .badge {
+            background-color: rgba(173, 255, 129, 0.75);
+        }
+        .section .bottom {
+            width: 100%;
+            display: flex;
+            justify-content: flex-start;
+        }
+        .section .bottom .left img {
+            width: 100px;
+            height: 140px;
+            margin: 5px;
+        }
+        .section .bottom .left {
+            margin-left: 5px;
+        }
+        .section .bottom .right {
+            margin-left: 10px;
+            margin-top: 40px;
+        }
+        a {
+            color: #5e5e5e;
+            text-decoration: none;
+            outline: none;
+        }
+       a:focus ,a:hover{
+            color: #5e5e5e;
+            text-decoration: none;
+            outline: none;
+        }
+    </style>
+</head>
+<body>
+
+<div id="box">
+    <div class="header">
+        <h1>☆晓晓明☆电影搜索榜</h1>
+        <input type="text" placeholder="请输入电影名/明星/类型" v-model="text" @keyup.13="all('search')" >
+        <div class="button">
+            <ul>
+                <li @click="all('in_theaters')">正在热映</li>
+                <li @click="all('coming_soon')">即将上映</li>
+                <li @click="all('top250')">Top250</li>
+            </ul>
+        </div>
+    </div>
+    <div class="section">
+        <h2>{{arr.title}}</h2>
+        <ul>
+            <li v-for="item in arr.subjects">
+                <a :href="item.alt" target="_blank">
+                    <h3>{{item.title}}</h3>
+                    <div class="bottom">
+                        <div class="left">
+                            <div class="rate">评分： <span class="badge">{{item.rating.average}}</span></div>
+                            <img :src="item.images.medium" alt="">
+                        </div>
+                        <div class="right">
+                            <p>导演:<span v-for="(direc,index) in item.directors">{{direc.name}} <span v-show="index !=item.directors.length-1">、</span></span></p>
+                            <p>类型:<span v-for="(direc,index) in item.genres">{{direc}} <span v-show="index !=item.genres.length-1">、</span></span></p>
+                            <p>主演:<span v-for="(direc,index) in item.casts">{{direc.name}} <span v-show="index !=item.casts.length-1">、</span></span></p>
+                            <p>上映时间：{{item.year}}</p>
+                        </div>
+                    </div>
+                </a>
+            </li>
+           
+        </ul>
+    </div>
+
+</div>
+</body>
+<script src="https://cdn.bootcss.com/vue/2.5.16/vue.min.js"></script>
+<!--<script src="https://cdn.bootcss.com/axios/0.18.0/axios.js"></script>-->
+<script src="https://cdn.bootcss.com/vue-resource/1.5.1/vue-resource.min.js"></script>
+<script src="https://cdn.bootcss.com/jquery/3.2.0/jquery.js"></script>
+<script src="https://cdn.bootcss.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+<script>
+    new Vue({
+        el:'#box',
+        data:{
+            arr:{},
+            text:''
+
+        },
+        methods:{
+           all:function (a) {
+               var that = this;
+               this.$http.jsonp('https://api.douban.com/v2/movie/'+a,{
+                   params:{
+                       count:18,
+                       q:this.text
+                   }
+               }).then(function (res) {
+                   that.arr = res.data;
+               },function (err) {
+                   console.log(err)
+               })
+           } ,
+
+        },
+        created:function () {
+            var that = this;
+            this.$http.jsonp('https://api.douban.com/v2/movie/in_theaters',{
+                params:{
+                    count:18
+                }
+            }).then(function (res) {
+                that.arr = res.data;
+            },function (err) {
+                console.log(err)
+            })
+        },
+        // methods:{
+        //     search:function () {
+        //         this.created();
+        //     }
+        // }
+    })
+</script>
+</html>
